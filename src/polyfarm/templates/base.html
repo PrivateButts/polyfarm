@@ -1,0 +1,30 @@
+{% load unicorn %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Polyfarm{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    {% unicorn_scripts %}
+    {% block head %}{% endblock %}
+</head>
+
+<body class="min-h-screen">
+    {% csrf_token %}
+    <nav class="navbar shadow mb-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a class="btn btn-ghost normal-case text-xl" href="/">Polyfarm</a>
+            {% block navbar %}{% endblock %}
+        </div>
+    </nav>
+    <main class="container mx-auto px-4">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

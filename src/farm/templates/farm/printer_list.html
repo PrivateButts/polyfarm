@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load unicorn %}
+
+{% block title %}Printer List{% endblock %}
+
+{% block content %}
+
+{% for p in printers %}
+{% unicorn 'printer_list_item' printer=p %}
+{% endfor %}
+
+<div>
+    {% unicorn "printer_create_form" %}
+</div>
+
+{% endblock %}

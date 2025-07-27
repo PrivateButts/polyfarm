@@ -1,0 +1,25 @@
+{% load unicorn %}
+
+<div id="printer-create-form">
+    {% csrf_token %}
+    <fieldset class="fieldset">
+        <input type="text" unicorn:model="printer_name" placeholder="Printer Name" class="input" value="{{ name }}" />
+
+        <select unicorn:model="printer_loc" class="select">
+            {% for loc in locations %}
+            <option value="{{ loc }}">{{ loc.name }}</option>
+            {% endfor %}
+        </select>
+
+        <select unicorn:model="handler_type" class="select">
+            <option value="mnrkr">Moonraker (Klipper)</option>
+            <option value="pl">Prusa Link</option>
+        </select>
+
+        {% if handler_type %}
+        {% unicorn 'handler_select' handler_name=handler_type %}
+        {% endif %}
+
+        <button type="submit" class="btn" unicorn:click.prevent="create_printer">Create Printer</button>
+    </fieldset>
+</div>

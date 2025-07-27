@@ -1,0 +1,8 @@
+<div>
+    <button class="btn">Add New</button>
+    <select unicorn:model="selection" class="select">
+        {% for c in connections %}
+        <option value="{{c}}">{{c}}</option>
+        {% endfor %}
+    </select>
+</div>
