@@ -1,5 +1,6 @@
 import importlib
 from enum import Enum
+from dataclasses import dataclass
 
 
 def get_handler(handler, obj):
@@ -21,10 +22,35 @@ def get_handler(handler, obj):
 
 
 class BaseHandler:
-    class statuses(Enum):
-        OFFLINE = 0
-        ONLINE = 1
+    class HandlerError(Exception):
+        pass
 
-    def get_info(self):
+    class statuses(Enum):
+        UNKNOWN = 0
+        IDLE = 1
+        READY = 2
+        PRINTING = 3
+        PAUSED = 4
+        ERROR = 5
+        FINISHED = 6
+
+    @dataclass
+    class PrinterInfo:
+        name: str
+        make: str
+        model: str
+
+    def get_info(self) -> PrinterInfo:
         """Fetches the current status of the printer"""
+        raise NotImplementedError("Base Handler Method Called")
+
+    @dataclass
+    class PrinterStatus:
+        status: "BaseHandler.statuses"
+        progress: float
+        message: str
+        temperatures: dict
+
+    def get_status(self) -> PrinterStatus:
+        """Returns the current status of the printer"""
         raise NotImplementedError("Base Handler Method Called")

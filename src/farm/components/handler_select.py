@@ -12,8 +12,9 @@ class HandlerSelectView(UnicornView):
     def mount(self):
         model = get_handler(self.handler_name, "models.HANDLER_MODEL")
         self.connections = model.objects.all()
-        print(self.connections[0])
-        self.parent.printer_connection = self.connections[0]
+        if self.connections.exists():
+            print(self.connections.first())
+            self.parent.printer_connection = self.connections.first()
 
     def updated_selection(self, value):
         self.parent.printer_connection = value

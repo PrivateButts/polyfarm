@@ -1,4 +1,23 @@
-<!-- hello-world.html -->
-<div>
-    {{ printer.name }} -- {{ printer.handler.get_info }}
+<div class="card bg-base-100 shadow p-2 mb-2 flex flex-col gap-1">
+    {% with info=printer.handler.get_info %}
+        {% with status=printer.handler.get_status %}
+            <div class="flex flex-row items-stretch justify-between w-full">
+                <div class="flex flex-col gap-1 text-xs">
+                    <span class="font-bold text-primary text-lg">{{ printer.name }}</span>
+                    <span class="text-secondary">{{ info.make }} {{ info.model }}</span>
+                    <div class="flex flex-row gap-2 mt-1">
+                        {% if status.progress and status.progress > 0 %}
+                            <span class="badge badge-info badge-sm">{{ status.progress|floatformat:0 }}%</span>
+                        {% endif %}
+                        {% if status.message %}<span class="badge badge-warning badge-sm">{{ status.message }}</span>{% endif %}
+                        <span class="badge badge-accent badge-sm">Bed: {{ status.temperatures.bed }}°C</span>
+                        <span class="badge badge-accent badge-sm">Nozzle: {{ status.temperatures.nozzle }}°C</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center">
+                    <span class="badge badge-outline badge-lg flex items-center justify-center py-6">{{ status.status.name }}</span>
+                </div>
+            </div>
+        {% endwith %}
+    {% endwith %}
 </div>

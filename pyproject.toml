@@ -30,6 +30,8 @@ dependencies = [
     "django>=5.2.4",
     "django-environ>=0.12.0",
     "django-unicorn>=0.62.0",
+    "pyprusalink>=2.1.1",
+    "python-benedict[parse]>=0.34.1",
     "requests>=2.32.4",
 ]
 

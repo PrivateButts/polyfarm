@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_unicorn",
     "farm",
     "mnrkr",
+    "prslnk",
 ]
 
 MIDDLEWARE = [

@@ -17,9 +17,22 @@ class Printer(BaseModel):
     name = models.CharField(max_length=100)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="printers")
 
+    # Generic fields for printer info
+    info_type = models.ForeignKey(
+        ContentType, on_delete=models.SET_NULL, related_name="printer_info", null=True, blank=True
+    )
+    info_id = models.PositiveIntegerField(blank=True, null=True)
+    info_obj = GenericForeignKey("info_type", "info_id")
+
     # Generic fields for printer handler
-    handler_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    handler_id = models.PositiveIntegerField()
+    handler_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.SET_NULL,
+        related_name="printer_handler",
+        null=True,
+        blank=True,
+    )
+    handler_id = models.PositiveIntegerField(blank=True, null=True)
     handler_obj = GenericForeignKey("handler_type", "handler_id")
 
     def __str__(self):
@@ -31,14 +44,8 @@ class Printer(BaseModel):
             return None
         return self.handler_obj.handler()
 
-    class Meta(BaseModel.Meta):
-        indexes = [
-            models.Index(fields=["handler_type", "handler_id"]),
-        ]
-
-
-class PrinterHandler(BaseModel):
-    class Meta(BaseModel.Meta):
-        abstract = True
-
-    name = models.CharField(max_length=100)
+    @property
+    def info(self):
+        if not self.info_obj:
+            return None
+        return self.info_obj

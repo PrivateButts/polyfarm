@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class MnrkrConfig(AppConfig):
+class PrslnkConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "mnrkr"
-    verbose_name = "Moonraker Connector"
+    name = "prslnk"
+    verbose_name = "PrusaLink Connector"
