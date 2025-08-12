@@ -1,0 +1,29 @@
+meta {
+  name: Status
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://{{mr_host}}/printer/objects/query?print_stats=state,message,filename&heater_bed=temperature&extruder=temperature&virtual_sdcard=progress,is_active&display_status=message
+  body: none
+  auth: apikey
+}
+
+params:query {
+  print_stats: state,message,filename
+  heater_bed: temperature
+  extruder: temperature
+  virtual_sdcard: progress,is_active
+  display_status: message
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{mr_key}}
+  placement: header
+}
+
+settings {
+  encodeUrl: true
+}

@@ -18,6 +18,9 @@
                     <span class="badge badge-outline badge-lg flex items-center justify-center py-6">{{ status.status.name }}</span>
                 </div>
             </div>
+            {% if status.progress and status.progress > 0 %}
+                <progress class="progress" value="{{ status.progress }}" max="100"></progress>
+            {% endif %}
         {% endwith %}
     {% endwith %}
 </div>

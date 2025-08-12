@@ -47,7 +47,7 @@ class BaseHandler:
     @dataclass
     class PrinterStatus:
         status: "BaseHandler.statuses"
-        progress: float
+        progress: float  # 0-100
         message: str
         temperatures: dict
 

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Polyfarm",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

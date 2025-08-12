@@ -34,9 +34,6 @@ class Handler(BaseHandler):
             "error": BaseHandler.statuses.ERROR,
             "complete": BaseHandler.statuses.FINISHED,
         }
-        print(
-            f"Mapping state '{state}' to status {status_map.get(state.lower(), BaseHandler.statuses.UNKNOWN)}."
-        )
         return status_map.get(state.lower(), BaseHandler.statuses.UNKNOWN)
 
     def get_status(self) -> BaseHandler.PrinterStatus:
@@ -45,7 +42,7 @@ class Handler(BaseHandler):
             "/printer/objects/query?print_stats=state,message,filename&heater_bed=temperature&extruder=temperature&virtual_sdcard=progress,is_active&display_status=message",
         ).result.status
         state = status.get_str("print_stats.state", "unknown")
-        progress = status.get_float("virtual_sdcard.progress", 0.0)
+        progress = status.get_float("virtual_sdcard.progress", 0.0) * 100.0
         stats_message = status.get_str("print_stats.message", "")
         display_message = status.get_str("display_status.message", "")
         message = stats_message if stats_message else display_message

@@ -39,13 +39,18 @@ class Handler(BaseHandler):
 
     @async_to_sync
     async def get_status(self) -> BaseHandler.PrinterStatus:
-        status = (await self.pl.get_status()).get("printer")
+        status_response = (await self.pl.get_status()).get("printer")
+        status = BaseHandler.statuses(self._status_map(status_response.get("state", "UNKNOWN")))
+        progress = 0.0
+        if status == BaseHandler.statuses.PRINTING:
+            job = await self.pl.get_job()
+            progress = job.get("progress", 0.0)
         return BaseHandler.PrinterStatus(
-            status=BaseHandler.statuses(self._status_map(status.get("state", "UNKNOWN"))),
-            progress=status.get("progress", 0.0),
-            message=status.get("message", ""),
+            status=status,
+            progress=progress,
+            message=status_response.get("message", ""),
             temperatures={
-                "bed": status.get("temp_bed", 0),
-                "nozzle": status.get("temp_nozzle", 0),
+                "bed": status_response.get("temp_bed", 0),
+                "nozzle": status_response.get("temp_nozzle", 0),
             },
         )

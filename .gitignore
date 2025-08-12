@@ -12,3 +12,6 @@ wheels/
 *.sqlite3
 .env
 staticfiles
+
+
+bruno/environments/private.bru
