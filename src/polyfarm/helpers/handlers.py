@@ -1,6 +1,7 @@
 import importlib
-from enum import Enum
 from dataclasses import dataclass
+from polyfarm.helpers import PrinterStatuses
+from polyfarm.helpers.models import BaseHandlerModel
 
 
 def get_handler(handler, obj):
@@ -25,14 +26,9 @@ class BaseHandler:
     class HandlerError(Exception):
         pass
 
-    class statuses(Enum):
-        UNKNOWN = 0
-        IDLE = 1
-        READY = 2
-        PRINTING = 3
-        PAUSED = 4
-        ERROR = 5
-        FINISHED = 6
+    def __init__(self, connection: BaseHandlerModel):
+        """Base handler class for printer handlers."""
+        self.connection = connection
 
     @dataclass
     class PrinterInfo:
@@ -46,7 +42,7 @@ class BaseHandler:
 
     @dataclass
     class PrinterStatus:
-        status: "BaseHandler.statuses"
+        status: PrinterStatuses
         progress: float  # 0-100
         message: str
         temperatures: dict
@@ -54,3 +50,19 @@ class BaseHandler:
     def get_status(self) -> PrinterStatus:
         """Returns the current status of the printer"""
         raise NotImplementedError("Base Handler Method Called")
+
+    def poll_printer(self):
+        """Polls the printer for its current status and updates the database."""
+        status = self.get_status()
+        info = self.get_info()
+        info_storage = self.connection.printer.info
+        info_storage.name = info.name
+        info_storage.make = info.make
+        info_storage.model = info.model
+
+        info_storage.status = status.status
+        info_storage.progress = status.progress
+        info_storage.message = status.message
+        info_storage.temperatures = status.temperatures
+
+        info_storage.save()

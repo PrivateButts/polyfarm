@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
+from polyfarm.helpers import PrinterStatuses
 
 
 class BaseModel(models.Model):
@@ -22,6 +23,14 @@ class BaseInfoModel(BaseModel):
 
     make = models.CharField(max_length=100, blank=True, null=True)
     model = models.CharField(max_length=100, blank=True, null=True)
+
+    status = models.IntegerField(
+        choices=PrinterStatuses,
+        default=0,
+    )
+    progress = models.FloatField(default=0.0)  # 0-100
+    message = models.TextField(blank=True, null=True)
+    temperatures = models.JSONField(default=dict)  # Store temperatures as a JSON object
 
     class Meta(BaseModel.Meta):
         abstract = True

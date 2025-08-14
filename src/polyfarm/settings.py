@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_unicorn",
+    "django_q",
     "farm",
     "mnrkr",
     "prslnk",
+    "bblb",
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,18 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Django Q
+Q_CLUSTER = {
+    "name": "Polyfarm",
+    "orm": "default",
+    "workers": 8,
+    "recycle": 500,
+    "timeout": 60,
+    "compress": True,
+    "cpu_affinity": 1,
+    "save_limit": 250,
+    "queue_limit": 500,
+    "label": "Django Q",
+}

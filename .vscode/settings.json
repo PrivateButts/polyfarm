@@ -4,5 +4,6 @@
   },
   "[django-html]": {
     "editor.defaultFormatter": "monosans.djlint"
-  }
+  },
+  "postman.settings.dotenv-detection-notification-visibility": false
 }
